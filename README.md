@@ -6,9 +6,13 @@ The **YC ATLAS Backend** is the API powerhouse behind **[YC ATLAS](https://yc-at
 
 ### 📌 Why YC ATLAS Backend?
 ✅ **AI-Enhanced YC Search** – Finds YC startups using natural language queries.
+
 ✅ **Multi-Step Agentic Search** – Expands queries with **LLM-powered reasoning**.
+
 ✅ **Vector Similarity Search** – Uses **text-embedding-3-large** for semantic search.
+
 ✅ **Super Fast API** – Built on **FastAPI** for high performance.
+
 ✅ **Scalable & Efficient** – Uses **Pinecone vector database** for lightning-fast retrieval.
 
 ---
@@ -90,12 +94,7 @@ response = requests.post("http://localhost:8000/deep_research", json={"query": "
 print(response.json())
 ```
 
-### 🏢 Get Company Details
-```python
-import requests
-response = requests.get("http://localhost:8000/company/company_id_here")
-print(response.json())
-```
+
 
 ---
 
