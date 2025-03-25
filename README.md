@@ -31,9 +31,9 @@ The **YC ATLAS Backend** is the API powerhouse behind **[YC ATLAS](https://yc-at
 ### 🔌 API Endpoints
 | Endpoint | Description |
 |----------|-------------|
-| `/search_companies` | Single-query YC company search |
-| `/deep_research` | Multi-query advanced search for deeper insights |
-| `/company/:id` | Fetches details of a specific YC startup |
+| `/api/search_companies` | Single-query YC company search |
+| `/api/deep_research` | Multi-query advanced search for deeper insights |
+| `/api/company/:id` | Fetches details of a specific YC startup |
 
 ---
 
@@ -66,11 +66,13 @@ cp .env.example .env
 # OPENAI_API_KEY=your_api_key
 # PINECONE_API_KEY=your_api_key
 # PINECONE_HOST_URL=your_pinecone_host_url
+# MONGO_URI=your_mongodb_connection_string
 ```
 
 ### ▶️ Running the API Server
 ```bash
-uvicorn main:app --reload
+# Run with uvicorn
+uvicorn app.main:app --reload
 ```
 🔗 **API available at:** [http://localhost:8000](http://localhost:8000)  
 🔗 **Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)  
@@ -83,18 +85,23 @@ uvicorn main:app --reload
 ### 🔍 Quick Search
 ```python
 import requests
-response = requests.post("http://localhost:8000/search_companies", json={"query": "Company that works in RAG"})
+response = requests.post("http://localhost:8000/api/search_companies", json={"query": "Company that works in RAG"})
 print(response.json())
 ```
 
 ### 🤖 Deep Research
 ```python
 import requests
-response = requests.post("http://localhost:8000/deep_research", json={"query": "AI-driven YC startups"})
+response = requests.post("http://localhost:8000/api/deep_research", json={"query": "AI-driven YC startups"})
 print(response.json())
 ```
 
-
+### 🏢 Get Company Details
+```python
+import requests
+response = requests.get("http://localhost:8000/api/company/CompanyName")
+print(response.json())
+```
 
 ---
 
@@ -114,13 +121,33 @@ print(response.json())
 
 ```
 YC-ATLAS-Backend/
-├── main.py               # FastAPI application entry point
-├── services/             # Business logic for search and embedding
-│   ├── openai_service.py   # OpenAI API integration
-│   ├── pinecone_service.py # Vector database operations
-│   └── prompts.py          # Prompts for OpenAI
-├── utils/                # Utility functions
-
+├── app/                   # Main application package
+│   ├── __init__.py        # Package initialization
+│   ├── main.py            # FastAPI application entry point
+│   ├── api/               # API-related code
+│   │   ├── __init__.py
+│   │   ├── models.py      # Pydantic models for API
+│   │   └── routes/        # API route handlers
+│   │       ├── __init__.py
+│   │       ├── search.py  # Search-related endpoints
+│   │       └── companies.py # Company data endpoints
+│   ├── core/              # Core application code
+│   │   ├── __init__.py
+│   │   └── config.py      # Application configuration
+│   ├── db/                # Database access layer
+│   │   ├── __init__.py
+│   │   └── company_data.py # Company data operations
+│   ├── services/          # Service layer for external APIs
+│   │   ├── __init__.py
+│   │   ├── openai_service.py  # OpenAI API integration
+│   │   ├── pinecone_service.py # Vector DB operations
+│   │   └── prompts.py     # Prompts for LLM interactions
+│   └── utils/             # Utility functions
+│       ├── __init__.py
+│       └── data_normalization.py # Data processing utilities
+├── requirements.txt       # Project dependencies
+├── .env.example           # Example environment variables
+└── README.md              # Project documentation
 ```
 
 ---

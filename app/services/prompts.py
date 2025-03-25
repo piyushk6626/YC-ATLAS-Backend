@@ -1,11 +1,24 @@
+"""Prompt templates for OpenAI API interactions."""
+
 from pydantic import BaseModel
-class QuestionGeneration(BaseModel):    
-    questions: list[str]
-
-SystemPrompt_Question="You will be given a query. Generate a list of related questions similar to the query that will help identify the most relevant companies in the same space as the company segments mentioned in the user query."
+from typing import List
 
 
-SystemPrompt="""Write a concise description to help the user find a company based on their query. Ensure the description incorporates the following points:
+class QuestionGeneration(BaseModel):
+    """Schema for question generation response.
+    
+    Attributes:
+        questions: List of generated questions
+    """
+    questions: List[str]
+
+
+# Prompt for generating related questions to expand a search query
+SystemPrompt_Question = """You will be given a query. Generate a list of related questions similar to the query that will help identify the most relevant companies in the same space as the company segments mentioned in the user query."""
+
+
+# Prompt for refining and explaining user queries
+SystemPrompt = """Write a concise description to help the user find a company based on their query. Ensure the description incorporates the following points:
 
 - **Mission of the company**: Clearly articulate the company's mission.
 - **Tech Stack of the company**: Highlight the technologies the company utilizes.
@@ -31,4 +44,4 @@ Your writing should be clear, engaging, and in the tone of Paul Graham—direct,
 
 **Output Example**: "a company passionately driven to make the world sustainable by integrating cutting-edge technology into everyday life. Their mission is simple yet powerful: to reduce carbon footprints globally. Leveraging a multi-faceted tech stack that includes AI-driven solutions and IoT devices, they are continuously innovating to create more sustainable practices. It's all about impact here—transforming our planet for the better, one tech solution at a time."
 
-(Note: The output should be tailored according to the specific company's mission and tech stack, ensuring it reflects the tone and style specified above.)"""
+(Note: The output should be tailored according to the specific company's mission and tech stack, ensuring it reflects the tone and style specified above.)""" 
