@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from services.pinecone_service import get_index, query_index
 from services.openai_service import create_embeddings, explain_user_query, deep_question
 from utils.data_normalization import normalize_data
-
+from comapneydata import return_data
 # Import logging
 import logging
 
@@ -84,5 +84,15 @@ def deep_research(request: QueryRequest):
         return final_data
     except Exception as e:
         logging.error(f"Error in deep_research: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@app.get("/company/{id}")
+def get_company(id: str):
+    """Get company data by ID."""
+    try:
+        return return_data(id)  # Returns a valid JSON object
+    except Exception as e:
+        logging.error(f"Error in get_company: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
